@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import './index.css'
 
 class Login extends Component {
-  state = {userName: '', password: '', errorMsg: ''}
+  state = {userName: '', password: '', errorMsg: '', showErrMsg: false}
 
   updatePassword = e => {
     this.setState({password: e.target.value})
@@ -41,12 +41,12 @@ class Login extends Component {
       Cookies.set('jwt_token', jwtToken, {expires: 2})
       history.replace('/')
     } else {
-      this.setState({errorMsg: data.error_msg})
+      this.setState({errorMsg: data.error_msg, showErrMsg: true})
     }
   }
 
   render() {
-    const {userName, password, errorMsg} = this.state
+    const {userName, password, errorMsg, showErrMsg} = this.state
     const Token = Cookies.get('jwt_token')
 
     if (Token !== undefined) {
@@ -91,8 +91,8 @@ class Login extends Component {
               <button className="login-button" type="submit">
                 Login
               </button>
+              {showErrMsg ? <p className="error-msg">{errorMsg}</p> : null}
             </form>
-            <p className="error-msg">{errorMsg}</p>
           </div>
         </div>
       </div>
